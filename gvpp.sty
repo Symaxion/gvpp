@@ -1,0 +1,32 @@
+\RequirePackage{ifthen}
+
+\ProvidesPackage{gvpp}
+
+\newcommand{\digraph}[3][scale=1]{\graphimpl{#1}{#2}{#3}{1}}
+\newcommand{\graph}[3][scale=1]{\graphimpl{#1}{#2}{#3}{0}}
+
+\newcommand{\graphimpl}[4]{
+  \newwrite\dotfile 
+  \immediate\openout\dotfile=#2.dot
+  \ifthenelse{\equal{#4}{1}}{
+    \immediate\write\dotfile{digraph #2 {\string#3}}
+  }{
+    \immediate\write\dotfile{graph #2 {\string#3}}
+  }
+  \immediate\closeout\dotfile
+  \immediate\write18{gvpp --pdf #2.dot}  
+  \IfFileExists{#2.pdf}
+  % the pdf exists: include it 
+  { \includegraphics[#1]{#2} } 
+  % the pdf was not created - show a hint
+  { \fbox{ \begin{tabular}{l} 
+        The file \texttt{#2.pdf} hasn't been created from 
+        \texttt{#2.dot} yet. \\
+        We attempted to create it with:\\
+        `\texttt{gvpp --pdf #2.dot}' \\
+        but that seems not to have worked. You need to execute `\texttt{pdflatex}' with \\
+        the `\texttt{-shell-escape} option. Also make sure you have the
+        \texttt{neato} program of the \emph{GraphViz} package installed.
+      \end{tabular}} 
+  } 
+}
