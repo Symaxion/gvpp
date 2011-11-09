@@ -5,13 +5,21 @@ GVPP=./gvpp.pl
 #GVPP=/usr/bin/gvpp.pl
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 [-d] filename"
+    echo "Usage: $0 [-d] [--pdf] filename"
     exit 1
 fi
 
-if [ "$1" == "-d" ]; then
+FILEXT="png"
+FNAME=""
+while [ -n "$1" ]; do
+    if [ "$1" == "-d" ]; then
+        GRAPHTYPE="digraph"
+    fi
+    if [ "$1" == "--pdf" ]; then
+        FILEXT="pdf"
+    fi
+    FNAME="$1"
     shift
-    GRAPHTYPE="digraph"
-fi
+done
 
-GRAPHTYPE="$GRAPHTYPE" ./gvpp.pl $1 | neato -Tpng -o $(basename $1 .dot).png
+GRAPHTYPE="$GRAPHTYPE" ./gvpp.pl $FNAME |  neato -T$FILEXT -o $(basename $FNAME .dot).$FILEXT
