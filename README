@@ -1,0 +1,22 @@
+Installation instructions
+
+1) Copy gvpp and gvpp.pl to somewhere in your path
+2) Edit gvpp to reflect the path to gvpp.pl
+
+Usage instructions
+
+First write all nodes, then write all edges, e.g, K3 would be:
+
+    1
+    2
+    3
+    1 -- 2
+    1 -- 3
+    2 -- 3
+
+All additional GraphViz options are supported too, e.g. [label="foo"] would add
+"foo" as a label.
+
+Also see the examples in the examples/ directory.
+
+Then, run gvpp myfile.dot . For digraphs, use gvpp -d .

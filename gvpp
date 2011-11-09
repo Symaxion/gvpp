@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Edit this!
+GVPP=./gvpp.pl
+#GVPP=/usr/bin/gvpp.pl
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 [-d] filename"
+    exit 1
+fi
+
+if [ "$1" == "-d" ]; then
+    shift
+    GRAPHTYPE="digraph"
+fi
+
+GRAPHTYPE="$GRAPHTYPE" ./gvpp.pl $1 | neato -Tpng -o $(basename $1 .dot).png
